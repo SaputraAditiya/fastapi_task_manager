@@ -41,3 +41,13 @@ def create_task(task:CreateTask):
     }
     tasks.append(new_task)
     return new_task
+
+@app.put('/tasks/{task_id}')
+def replace_task(task_id:int, task:CreateTask):
+    for existing_task in tasks:
+        if existing_task["id"] == task_id:
+            existing_task["task"] = task.task
+            
+            return existing_task
+    
+    return {'message' : 'ID Tidak di temukan'}
