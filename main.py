@@ -1,6 +1,10 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
 
 app = FastAPI()
+
+class CreateTask(BaseModel):
+    task:str
 
 tasks = [
     {
@@ -28,3 +32,9 @@ def get_task(task_id: int):
             return task
         
     return {'message' : 'Task tidak di temukan'}
+
+@app.post('/tasks')
+def create_task(task:CreateTask):
+    return {
+        'task_nama':task.task
+    }
