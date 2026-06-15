@@ -36,5 +36,6 @@ def get_task(task_id: int):
 @app.post('/tasks')
 def create_task(task:CreateTask):
     return {
-        'task_nama':task.task
+        'message' : 'Berhasil menambahkan',
+        'data' : task
     }
