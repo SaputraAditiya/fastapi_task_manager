@@ -29,42 +29,88 @@ def profile(user = Depends(get_current_user)):
     return user
 
 @router.get('/tasks')
-def get_tasks(db : Session = Depends(get_db)):
+def get_tasks(
+    db : Session = Depends(get_db) 
+):
+    
     return db.query(Task).all()
     
 @router.get('/tasks/{task_id}')
-def get_task(task_id: int):
-    for task in tasks:
-        if task['id'] == task_id:
-            return task
-        
-    raise HTTPException(status_code=404, detail="Tasks doesnt exist")
+def get_task(
+    task_id : int, 
+    db : Session = Depends(get_db)
+):
+    
+    task = db.query(Task).filter(
+        Task.id == task_id
+    ).first()
+    
+    if not task:
+        raise HTTPException(
+            status_code=404, 
+            detail="Tasks doesnt exist"
+        )
+    
+    return task
 
 @router.post('/tasks')
-def create_task(task : TaskCreate, db : Session = Depends(get_db)):
+def create_task(
+    task : TaskCreate, 
+    db : Session = Depends(get_db)
+):
+    
     new_task = Task(
         task = task.task
     )
+    
     db.add(new_task)
+    
     db.commit()
+    
     return {
         'message' : 'Berhasil di tambahkan'
     }
 
 @router.put('/tasks/{task_id}')
-def replace_task(task_id:int, task:TaskCreate):
-    for existing_task in tasks:
-        if existing_task["id"] == task_id:
-            existing_task["task"] = task.task
-            
-            return existing_task
+def replace_task(task_id : int, 
+                 new_task : TaskCreate, 
+                 db : Session = Depends(get_db)
+):
     
-    return {'message' : 'ID Tidak di temukan'}
+    task = db.query(Task).filter(
+        Task.id == task_id
+    ).first()
+    
+    if not task:
+        raise HTTPException(
+            status_code=404, 
+            detail="Tasks doesnt exist"
+        )
+    
+    task.task = new_task.task
+    
+    db.commit()
+    
+    db.refresh(task)
+    
+    return task
 
 @router.delete('/tasks/{task_id}')
-def delete_task(task_id:int):
-    for task in tasks:
-        if task["id"] == task_id:
-            tasks.remove(task)
-            return {'Message' : f'Task {task_id} berhasil di hapus'} 
-    return {'Message' : 'Task tidak di temukan'}
+def delete_task(task_id:int,
+                db : Session = Depends(get_db)
+):
+    task = db.query(Task).filter(
+        Task.id == task_id
+    ).first()
+    
+    if not task:
+        raise HTTPException(
+            status_code=404,
+            detail="Tasks doesnt exist"
+        )
+    
+    db.delete(task)
+    
+    db.commit()
+        
+    return {'Message' : f'Task {task_id} berhasil di hapus'}
