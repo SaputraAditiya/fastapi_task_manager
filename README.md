@@ -1,4 +1,6 @@
 # FastAPI Task Manager
+<img width="1440" height="779" alt="Screenshot 2026-06-23 at 08 56 55" src="https://github.com/user-attachments/assets/6265807e-a157-41b1-a563-22368d9ae988" />
+
 
 ## Overview
 
@@ -41,21 +43,32 @@ Melalui project ini, saya ingin memahami:
 
 ## Tech Stack
 
-### Current Stack
+### Frontend
+- Svelte
+- JavaScript (ES6+)
+- HTML5
+- CSS3
 
-* Python 3.14.3
-* FastAPI
-* Uvicorn
+### Backend
+- FastAPI
+- Uvicorn
+- Pydantic
 
-### Planned Stack
+### API
+- REST API
+- JSON
 
-* SQLAlchemy
-* PostgreSQL
-* Alembic
-* JWT Authentication
-* Docker
+### Development Tools
+- Python Virtual Environment (.venv)
+- pip
+- npm
 
----
+### Planned
+- SQLAlchemy
+- PostgreSQL
+- Alembic
+- JWT Authentication
+- Docker
 
 ## Background
 
