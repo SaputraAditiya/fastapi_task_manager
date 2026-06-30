@@ -6,28 +6,6 @@ from sqlalchemy.orm import Session
 
 router = APIRouter()
 
-tasks = [
-    {
-        'id' : 1,
-        'task' : 'Belajar Fastapi'
-    },
-    {
-        'id' : 2,
-        'task' : 'Kerjakan reimburse app'
-    }
-]
-
-def get_current_user():
-    return {
-        'id':1,
-        'name':'adit'
-    }
-
-@router.get('/profile')
-def profile(user = Depends(get_current_user)):
-    
-    return user
-
 @router.get('/tasks')
 def get_tasks(
     db : Session = Depends(get_db) 
